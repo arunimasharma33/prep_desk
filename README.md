@@ -35,7 +35,7 @@
 
 <div align="center">
   <img src="./screenshots/hero.png" alt="Prep Desk — landing page and readiness report" width="100%" />
-  <sub><i>↑ Replace with a full-width screenshot of the landing page or the readiness report — see <a href="#-screenshots">Screenshots</a> for exact specs.</i></sub>
+  
 </div>
 
 <br/>
@@ -75,14 +75,12 @@ toy prototype.
 <td width="50%">
 
 **Landing page**
-`screenshots/landing.png`
 <img src="./screenshots/landing.png" alt="Landing page" width="100%" />
 
 </td>
 <td width="50%">
 
 **Readiness report** — score, gaps, questions
-`screenshots/analysis-result.png`
 <img src="./screenshots/analysis-result.png" alt="Analysis result" width="100%" />
 
 </td>
@@ -91,14 +89,12 @@ toy prototype.
 <td width="50%">
 
 **Study plan** with progress tracker
-`screenshots/study-plan.png`
 <img src="./screenshots/study-plan.png" alt="Study plan" width="100%" />
 
 </td>
 <td width="50%">
 
 **Resume builder** — templates + live preview
-`screenshots/resume-builder.png`
 <img src="./screenshots/resume.png" alt="Resume builder" width="100%" />
 
 </td>
@@ -113,7 +109,6 @@ toy prototype.
 <td width="50%">
 
 **History** — easy to access all past analysis
-`screenshots/analysis-result.png`
 <img src="./screenshots/history.png" alt="Analysis result" width="100%" />
 
 </td>
