@@ -7,7 +7,6 @@
 ### AI-powered interview readiness — score your fit, know the questions, follow the plan, ship the resume.
 
 <p>
-  <a href="https://your-project.vercel.app"><strong>🔗 Live Demo</strong></a>
   ·
   <a href="#-features">Features</a>
   ·
