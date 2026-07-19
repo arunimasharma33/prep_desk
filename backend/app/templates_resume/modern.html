@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 24px 42px; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1a1a1a; font-size: 10.5pt; line-height: 1.5; margin: 0; }
+  h1 { font-size: 22pt; margin: 0 0 2px 0; font-weight: 700; color: #0f4c5c; }
+  .headline { font-size: 11.5pt; color: #0f4c5c; font-weight: 600; margin-bottom: 6px; }
+  .contact { font-size: 9.5pt; color: #555; margin-bottom: 16px; }
+  .contact span:not(:last-child)::after { content: "   \2022   "; color: #0f4c5c; }
+  h2 { font-size: 11pt; text-transform: uppercase; letter-spacing: 1.5px; color: #0f4c5c;
+       margin: 16px 0 8px 0; border-bottom: 2px solid #0f4c5c; padding-bottom: 3px; }
+  .summary { margin-bottom: 4px; }
+  .entry { margin-bottom: 11px; break-inside: avoid; }
+  .entry-head { display: flex; justify-content: space-between; font-weight: 700; font-size: 10.8pt; color: #111; }
+  .entry-sub { color: #0f4c5c; font-size: 9.8pt; margin-bottom: 3px; font-weight: 600; }
+  ul { margin: 3px 0 0 0; padding-left: 18px; }
+  li { margin-bottom: 3px; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill { background: #eaf4f4; color: #0f4c5c; border-radius: 3px; padding: 3px 9px; font-size: 9pt; font-weight: 600; }
+</style>
+</head>
+<body>
+  <h1>{{ name }}</h1>
+  {% if title %}<div class="headline">{{ title }}</div>{% endif %}
+  <div class="contact">
+    {% if contact.email %}<span>{{ contact.email }}</span>{% endif %}
+    {% if contact.phone %}<span>{{ contact.phone }}</span>{% endif %}
+    {% if contact.location %}<span>{{ contact.location }}</span>{% endif %}
+    {% if contact.linkedin %}<span>{{ contact.linkedin }}</span>{% endif %}
+    {% if contact.portfolio %}<span>{{ contact.portfolio }}</span>{% endif %}
+  </div>
+
+  {% if summary %}
+  <h2>Summary</h2>
+  <div class="summary">{{ summary }}</div>
+  {% endif %}
+
+  {% if skills and skills|length > 0 %}
+  <h2>Skills</h2>
+  <div class="pill-row">{% for s in skills %}<span class="pill">{{ s }}</span>{% endfor %}</div>
+  {% endif %}
+
+  {% if experience and experience|length > 0 %}
+  <h2>Experience</h2>
+  {% for e in experience %}
+  <div class="entry">
+    <div class="entry-head"><span>{{ e.role }}</span><span>{{ e.duration }}</span></div>
+    <div class="entry-sub">{{ e.company }}</div>
+    {% if e.bullets %}<ul>{% for b in e.bullets %}<li>{{ b }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  {% if projects and projects|length > 0 %}
+  <h2>Projects</h2>
+  {% for p in projects %}
+  <div class="entry">
+    <div class="entry-head"><span>{{ p.name }}</span></div>
+    {% if p.bullets %}<ul>{% for b in p.bullets %}<li>{{ b }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  {% if education and education|length > 0 %}
+  <h2>Education</h2>
+  {% for ed in education %}
+  <div class="entry">
+    <div class="entry-head"><span>{{ ed.degree }}</span><span>{{ ed.duration }}</span></div>
+    <div class="entry-sub">{{ ed.school }}</div>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  {% if certifications and certifications|length > 0 %}
+  <h2>Certifications</h2>
+  <div class="pill-row">{% for c in certifications %}<span class="pill">{{ c }}</span>{% endfor %}</div>
+  {% endif %}
+</body>
+</html>

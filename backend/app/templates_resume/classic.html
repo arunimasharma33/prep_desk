@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 26px 40px; }
+  * { box-sizing: border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; color: #111; font-size: 11pt; line-height: 1.45; margin: 0; }
+  h1 { font-size: 20pt; margin: 0 0 2px 0; font-weight: 700; letter-spacing: 0.5px; }
+  .headline { font-size: 11.5pt; color: #333; margin-bottom: 6px; }
+  .contact { font-size: 9.5pt; color: #333; margin-bottom: 14px; }
+  .contact span:not(:last-child)::after { content: " \00b7 "; }
+  h2 { font-size: 11.5pt; text-transform: uppercase; letter-spacing: 1.2px; border-bottom: 1px solid #111;
+       padding-bottom: 3px; margin: 16px 0 8px 0; }
+  .summary { margin-bottom: 4px; }
+  .entry { margin-bottom: 10px; break-inside: avoid; }
+  .entry-head { display: flex; justify-content: space-between; font-weight: 700; font-size: 11pt; }
+  .entry-sub { font-style: italic; color: #333; font-size: 10pt; margin-bottom: 3px; }
+  ul { margin: 2px 0 0 0; padding-left: 18px; }
+  li { margin-bottom: 2px; }
+  .skills-list { display: block; }
+  .skills-list span::after { content: "  |  "; color: #888; }
+  .skills-list span:last-child::after { content: ""; }
+</style>
+</head>
+<body>
+  <h1>{{ name }}</h1>
+  {% if title %}<div class="headline">{{ title }}</div>{% endif %}
+  <div class="contact">
+    {% if contact.email %}<span>{{ contact.email }}</span>{% endif %}
+    {% if contact.phone %}<span>{{ contact.phone }}</span>{% endif %}
+    {% if contact.location %}<span>{{ contact.location }}</span>{% endif %}
+    {% if contact.linkedin %}<span>{{ contact.linkedin }}</span>{% endif %}
+    {% if contact.portfolio %}<span>{{ contact.portfolio }}</span>{% endif %}
+  </div>
+
+  {% if summary %}
+  <h2>Summary</h2>
+  <div class="summary">{{ summary }}</div>
+  {% endif %}
+
+  {% if skills and skills|length > 0 %}
+  <h2>Skills</h2>
+  <div class="skills-list">{% for s in skills %}<span>{{ s }}</span>{% endfor %}</div>
+  {% endif %}
+
+  {% if experience and experience|length > 0 %}
+  <h2>Experience</h2>
+  {% for e in experience %}
+  <div class="entry">
+    <div class="entry-head"><span>{{ e.role }}, {{ e.company }}</span><span>{{ e.duration }}</span></div>
+    {% if e.bullets %}<ul>{% for b in e.bullets %}<li>{{ b }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  {% if projects and projects|length > 0 %}
+  <h2>Projects</h2>
+  {% for p in projects %}
+  <div class="entry">
+    <div class="entry-head"><span>{{ p.name }}</span></div>
+    {% if p.bullets %}<ul>{% for b in p.bullets %}<li>{{ b }}</li>{% endfor %}</ul>{% endif %}
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  {% if education and education|length > 0 %}
+  <h2>Education</h2>
+  {% for ed in education %}
+  <div class="entry">
+    <div class="entry-head"><span>{{ ed.degree }}, {{ ed.school }}</span><span>{{ ed.duration }}</span></div>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  {% if certifications and certifications|length > 0 %}
+  <h2>Certifications</h2>
+  <ul>{% for c in certifications %}<li>{{ c }}</li>{% endfor %}</ul>
+  {% endif %}
+</body>
+</html>

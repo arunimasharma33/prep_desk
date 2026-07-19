@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+interview.db
+generated_pdfs/*.pdf
+!generated_pdfs/.gitkeep
+venv/
+.venv/
+node_modules/
+package-lock.json

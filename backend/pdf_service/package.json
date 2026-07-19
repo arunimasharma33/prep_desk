@@ -1,0 +1,13 @@
+{
+  "name": "interview-platform-pdf-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Renders resume HTML to PDF using Puppeteer, invoked as a subprocess from the FastAPI backend.",
+  "main": "generate_pdf.js",
+  "scripts": {
+    "generate": "node generate_pdf.js"
+  },
+  "dependencies": {
+    "puppeteer": "^25.3.0"
+  }
+}
