@@ -70,50 +70,23 @@ toy prototype.
 ---
 
 ## 📸 Screenshots
-<table>
-<tr>
-<td width="50%">
-
-**Landing page**
+Landing page  
 <img src="./screenshots/landing.png" alt="Landing page" width="100%" />
 
-</td>
-<td width="50%">
-
-**Readiness report** — score, gaps, questions
+Readiness report — score, gaps, questions
 <img src="./screenshots/analysis-result.png" alt="Analysis result" width="100%" />
 
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-**Study plan** with progress tracker
+Study plan with progress tracker
 <img src="./screenshots/study-plan.png" alt="Study plan" width="100%" />
 
-</td>
-<td width="50%">
-
-**Resume builder** — templates + live preview
+Resume builder — templates + live preview
 <img src="./screenshots/resume.png" alt="Resume builder" width="100%" />
 
-</td>
-</tr>
-<tr>
-<td width="50%">
+Question Suggestions — likely technical and behavioral question set
+<img src="./screenshots/ques.png" alt="Question Suggestions" width="100%" />
 
-**Question Suggestions** - likely technical and behavorial question set
-<img src="./screenshots/ques.png" alt="Landing page" width="100%" />
-
-</td>
-<td width="50%">
-
-**History** — easy to access all past analysis
-<img src="./screenshots/history.png" alt="Analysis result" width="100%" />
-
-</td>
-</tr>
-</table>
+History — easy to access all past analysis
+<img src="./screenshots/history.png" alt="History" width="100%" />
 
 
 ## 🛠 Tech Stack
@@ -128,16 +101,7 @@ toy prototype.
 ---
 
 ## 🏗 Architecture
-
-```mermaid
-flowchart LR
-    User(("👤 User")) --> FE["React Frontend\n(Vercel)"]
-    FE -->|"REST + JWT"| BE["FastAPI Backend\n(Render)"]
-    BE --> DB[("SQLite")]
-    BE -->|"JSON-mode prompts"| AI["Mistral AI\n(multi-key rotation)"]
-    BE -->|"HTML → PDF"| PDF["Puppeteer Service\n(Render, Node.js)"]
-    BE -->|"OTP emails"| MAIL["SMTP\n(Brevo)"]
-```
+<img src="./screenshots/architecture.png" alt="History" width="100%" />
 
 <details>
 <summary><strong>📂 Full project structure</strong></summary>
