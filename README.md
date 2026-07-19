@@ -1,257 +1,271 @@
-# Prep Desk — AI Interview Readiness Platform
+<div align="center">
 
-An end-to-end interview prep tool. Paste a job description (and optionally your resume), and it will:
+<img src="./screenshots/logo.png" alt="Prep Desk logo" width="88" />
 
-- **Score your fit** for the role (0–100) with an explanation, matched skills, and skill gaps
-- **Generate likely interview questions** — technical and behavioral, tailored to the JD and your gaps
-- **Build a day-by-day study plan** for however many days you have left, with a progress tracker
-- **Rewrite your resume** to be ATS-friendly and tailored to the role, exportable as a polished PDF (3 templates)
-- **Save everything** to your account — every analysis, plan, and resume version, with auth and history
+# Prep Desk
 
-All of the "intelligence" (scoring, questions, plans, resume rewriting) is powered by **Mistral AI**.
-**You only need to add your API key — everything else is already wired up.**
+### AI-powered interview readiness — score your fit, know the questions, follow the plan, ship the resume.
+
+<p>
+  <a href="https://your-project.vercel.app"><strong>🔗 Live Demo</strong></a>
+  ·
+  <a href="#-features">Features</a>
+  ·
+  <a href="#-screenshots">Screenshots</a>
+  ·
+  <a href="#-tech-stack">Tech Stack</a>
+  ·
+  <a href="#-getting-started-local-development">Run it locally</a>
+</p>
+
+<p>
+  <img src="https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" alt="React">
+  <img src="https://img.shields.io/badge/Node.js-20-339933?logo=node.js&logoColor=white" alt="Node.js">
+  <img src="https://img.shields.io/badge/AI-Mistral-FA520F" alt="Mistral AI">
+  <img src="https://img.shields.io/badge/PDF-Puppeteer-40B5A4?logo=puppeteer&logoColor=white" alt="Puppeteer">
+  <img src="https://img.shields.io/badge/Auth-JWT%20%2B%20OTP-4B5563" alt="Auth">
+  <img src="https://img.shields.io/badge/status-live-brightgreen" alt="Status">
+</p>
+
+</div>
+
+<br/>
+
+<div align="center">
+  <img src="./screenshots/hero.png" alt="Prep Desk — landing page and readiness report" width="100%" />
+  <sub><i>↑ Replace with a full-width screenshot of the landing page or the readiness report — see <a href="#-screenshots">Screenshots</a> for exact specs.</i></sub>
+</div>
+
+<br/>
+
+## Why I built this
+
+Job hunting means juggling five different tools: one tab to check if you're even qualified, another
+for practicing questions, a spreadsheet for a study plan, and a separate resume for every application.
+**Prep Desk** puts all of it in one place — paste a job description and your resume, and it tells you
+exactly how you stack up, what you'll be asked, how to spend the days you have left, and rewrites your
+resume to match the role, with a live preview before you download it.
+
+Everything runs on a real production stack — FastAPI, a Mistral-powered LLM pipeline with automatic
+multi-key failover, JWT + email-OTP auth, and server-side PDF rendering via headless Chrome — not a
+toy prototype.
 
 ---
 
-## 1. Architecture
+## ✨ Features
+
+| | |
+|---|---|
+| 🎯 **Instant match score** | Paste a JD + resume → get a 0–100 fit score with a plain-English breakdown, matched skills, and skill gaps |
+| ❓ **Tailored interview questions** | 10+ technical and behavioral questions generated from the *actual* JD and *your* specific gaps — not a generic bank |
+| 📅 **Day-by-day study plan** | Tell it how many days you have left → get a prioritized plan with a built-in progress tracker |
+| 📄 **ATS resume rewrite** | Reuses the resume you already uploaded — no re-pasting. Tuned to fill exactly one A4 page, never fabricates experience |
+| 👀 **Live template preview** | See all 3 resume templates rendered with your real content before picking one, plus a full preview before download |
+| 🔐 **Real auth, not a toy login** | Email OTP verification on signup, JWT sessions, OTP-based password reset |
+| 🗂️ **Full history** | Every analysis, plan, and resume version saved to your account |
+| ⚡ **Multi-key AI failover** | Configure multiple Mistral API keys — requests auto-rotate and fail over on rate limits |
+
+---
+
+## 📸 Screenshots
+<table>
+<tr>
+<td width="50%">
+
+**Landing page**
+`screenshots/landing.png`
+<img src="./screenshots/landing.png" alt="Landing page" width="100%" />
+
+</td>
+<td width="50%">
+
+**Readiness report** — score, gaps, questions
+`screenshots/analysis-result.png`
+<img src="./screenshots/analysis-result.png" alt="Analysis result" width="100%" />
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**Study plan** with progress tracker
+`screenshots/study-plan.png`
+<img src="./screenshots/study-plan.png" alt="Study plan" width="100%" />
+
+</td>
+<td width="50%">
+
+**Resume builder** — templates + live preview
+`screenshots/resume-builder.png`
+<img src="./screenshots/resume.png" alt="Resume builder" width="100%" />
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**Question Suggestions** - likely technical and behavorial question set
+<img src="./screenshots/ques.png" alt="Landing page" width="100%" />
+
+</td>
+<td width="50%">
+
+**History** — easy to access all past analysis
+`screenshots/analysis-result.png`
+<img src="./screenshots/history.png" alt="Analysis result" width="100%" />
+
+</td>
+</tr>
+</table>
+
+
+## 🛠 Tech Stack
+
+**Frontend** — React 19 + Vite, no UI framework (hand-styled), React Router
+**Backend** — FastAPI, SQLAlchemy + SQLite, JWT auth, Jinja2
+**AI** — Mistral AI (JSON-mode structured outputs, multi-key rotation/failover)
+**PDF generation** — Node.js + Puppeteer (headless Chrome), server-rendered HTML → PDF
+**Email** — SMTP (OTP verification + password reset), tested with Brevo's free tier
+**Deployed on** — Vercel (frontend) + Render (backend + PDF service)
+
+---
+
+## 🏗 Architecture
+
+```mermaid
+flowchart LR
+    User(("👤 User")) --> FE["React Frontend\n(Vercel)"]
+    FE -->|"REST + JWT"| BE["FastAPI Backend\n(Render)"]
+    BE --> DB[("SQLite")]
+    BE -->|"JSON-mode prompts"| AI["Mistral AI\n(multi-key rotation)"]
+    BE -->|"HTML → PDF"| PDF["Puppeteer Service\n(Render, Node.js)"]
+    BE -->|"OTP emails"| MAIL["SMTP\n(Brevo)"]
+```
+
+<details>
+<summary><strong>📂 Full project structure</strong></summary>
 
 ```
 interview-platform/
-├── backend/                  FastAPI + SQLite + Mistral AI (via httpx REST calls)
+├── backend/
 │   ├── app/
-│   │   ├── main.py           FastAPI app, CORS, router registration
-│   │   ├── config.py         Settings, loads backend/.env
-│   │   ├── database.py       SQLAlchemy engine/session
-│   │   ├── models_db.py      ORM models: User, Analysis, StudyPlan, Resume
-│   │   ├── schemas.py        Pydantic request/response models
-│   │   ├── auth.py           JWT + password hashing
-│   │   ├── llm.py            Mistral API client (JSON-mode chat completions over REST)
+│   │   ├── main.py               FastAPI app, CORS, router registration
+│   │   ├── config.py             Settings (Mistral keys, SMTP, JWT, etc.)
+│   │   ├── database.py           SQLAlchemy engine/session
+│   │   ├── models_db.py          User, Analysis, StudyPlan, Resume
+│   │   ├── schemas.py            Pydantic request/response models
+│   │   ├── auth.py               JWT + password hashing
+│   │   ├── llm.py                Mistral client — multi-key rotation & failover
 │   │   ├── services/
-│   │   │   ├── analyzer.py   Prompt + logic: JD/resume match, questions
-│   │   │   ├── planner.py    Prompt + logic: day-by-day study plan
-│   │   │   ├── resume_ai.py  Prompt + logic: ATS resume rewrite
-│   │   │   └── pdf_render.py Jinja2 HTML render → calls the node PDF service
-│   │   ├── templates_resume/ 3 HTML resume templates (classic/modern/compact)
-│   │   ├── routers/          auth, analyze, plan, resume endpoints
-│   │   └── utils/file_extract.py   PDF/DOCX/TXT resume text extraction
-│   ├── pdf_service/
-│   │   ├── generate_pdf.js   Puppeteer: HTML file → PDF file
-│   │   └── package.json
-│   └── requirements.txt
-│
-└── frontend/                 React + Vite (no UI framework, hand-styled)
-    └── src/
-        ├── lib/api.js         Fetch wrapper with JWT auth
-        ├── lib/auth-context.jsx
-        └── components/        NewAnalysis, AnalysisResult, PlanNew/View,
-                                ResumeBuilder/Detail, History, AuthPage, ScoreGauge
+│   │   │   ├── analyzer.py       JD/resume match + question generation
+│   │   │   ├── planner.py        Day-by-day study plan generation
+│   │   │   ├── resume_ai.py      ATS resume rewrite (one-page-fill logic)
+│   │   │   ├── pdf_render.py     HTML render → PDF (local or split-service mode)
+│   │   │   ├── email_service.py  SMTP sending
+│   │   │   └── otp_service.py    OTP generation/verification
+│   │   ├── templates_resume/     3 HTML resume templates
+│   │   └── routers/              auth, analyze, plan, resume endpoints
+│   └── pdf_service/
+│       ├── generate_pdf.js       CLI mode (local subprocess)
+│       ├── server.js             HTTP mode (split deployment, e.g. Render)
+│       └── pdf_lib.js            Shared Puppeteer rendering logic
+├── frontend/
+│   └── src/
+│       ├── lib/api.js            Fetch wrapper with JWT auth
+│       └── components/           Landing, AuthPage, AnalysisResult,
+│                                  PlanView, ResumeBuilder, History, ...
+├── DEPLOYMENT.md                 Full deployment guide (3 paths)
+└── screenshots/                  ← your images go here
 ```
 
-The backend never fabricates resume content — the resume rewrite prompt is instructed to only
-rephrase/reorganize/quantify what you actually provided, never invent employers or skills.
+</details>
 
 ---
 
-## 2. Prerequisites
+## 🚀 Getting Started (local development)
 
-- **Python 3.10+**
-- **Node.js 18+** and npm (for both the frontend and the Puppeteer PDF service)
-- A **Mistral API key** — get one at https://console.mistral.ai/
-
----
-
-## 3. Setup
-
-### 3.1 Backend
+**Prerequisites:** Python 3.10+, Node.js 18+, a [Mistral API key](https://console.mistral.ai/), and
+SMTP credentials for OTP emails ([Brevo](https://www.brevo.com)'s free tier works well — 300 emails/day, no card required).
 
 ```bash
+# 1. Backend
 cd backend
-python3 -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
-
-cp .env.example .env
-```
-
-Open `backend/.env` and set your key:
-
-```
-MISTRAL_API_KEY=your-mistral-key-here
-```
-
-**Presenting/demoing and worried about rate limits?** Add multiple comma-separated keys instead —
-requests automatically round-robin across them, and if one gets rate-limited mid-demo it fails over
-to the next one on the very next request:
-
-```
-MISTRAL_API_KEYS=key-one,key-two,key-three
-```
-
-Then set up email — **required**, since new accounts must verify a one-time code sent to their inbox,
-and password reset also works by emailed code. Any SMTP provider works; the easiest is Gmail with an
-[App Password](https://myaccount.google.com/apppasswords) (your regular Gmail password won't work):
-
-```
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USERNAME=you@gmail.com
-SMTP_PASSWORD=your-16-character-app-password
-SMTP_FROM_EMAIL=you@gmail.com
-```
-
-Then start the API:
-
-```bash
+cp .env.example .env   # fill in MISTRAL_API_KEY and SMTP_* — see table below
 uvicorn app.main:app --reload --port 8000
-```
 
-The SQLite database (`interview.db`) and a persistent JWT secret are created automatically on first run.
+# 2. PDF service (one-time)
+cd backend/pdf_service && npm install
 
-### 3.2 PDF service (Puppeteer)
-
-```bash
-cd backend/pdf_service
-npm install
-```
-
-This downloads a bundled Chromium the first time (needs normal internet access) — after that, resume
-PDF export works standalone. The FastAPI backend calls this script as a subprocess; you don't run it
-directly.
-
-> **Restricted network / corporate proxy?** If the Chromium download is blocked, install a system
-> Chromium/Chrome and point Puppeteer at it instead of downloading its own:
-> ```bash
-> PUPPETEER_SKIP_DOWNLOAD=true npm install
-> export PUPPETEER_EXECUTABLE_PATH=/path/to/chrome-or-chromium
-> ```
-> Set `PUPPETEER_EXECUTABLE_PATH` in the environment the backend runs in (e.g. add it to `backend/.env`
-> loading, or export it in your shell before starting uvicorn).
-
-### 3.3 Frontend
-
-```bash
+# 3. Frontend
 cd frontend
-npm install
-cp .env.example .env     # defaults to http://localhost:8000, change if needed
+npm install && cp .env.example .env
 npm run dev
 ```
 
-Visit **http://localhost:5173**, create an account, enter the code emailed to you, and go.
+Open **http://localhost:5173**, register, check your inbox for the verification code, and go.
 
----
+Full production deployment steps (Docker Compose, manual VPS, or Vercel+Render) are in
+**[`DEPLOYMENT.md`](./DEPLOYMENT.md)**.
 
-## 4. Environment variables
+<details>
+<summary><strong>Environment variables reference</strong></summary>
 
-**`backend/.env`**
+| Variable | Required | Notes |
+|---|---|---|
+| `MISTRAL_API_KEY` / `MISTRAL_API_KEYS` | **Yes** | Single key or comma-separated list for rotation/failover |
+| `MISTRAL_MODEL` | No | Defaults to `mistral-large-latest` |
+| `SMTP_HOST` / `PORT` / `USERNAME` / `PASSWORD` / `FROM_EMAIL` | **Yes** | Needed for OTP signup/reset emails |
+| `CORS_ORIGINS` | No | Comma-separated allowed frontend origins |
+| `JWT_SECRET` | No | Auto-generated if unset (set explicitly on ephemeral-disk hosts like Render free tier) |
+| `DATABASE_URL` | No | Defaults to local SQLite; swap for Postgres if needed |
+| `PDF_SERVICE_URL` / `PDF_SERVICE_TOKEN` | No | Only for split deployments (PDF renderer as its own service) |
+| `VITE_API_URL` (frontend) | **Yes** | Where the frontend finds the backend API |
 
-| Variable | Required | Default | Notes |
-|---|---|---|---|
-| `MISTRAL_API_KEY` | **Yes**¹ | — | Enables all AI features. Without it, AI endpoints return a clear 400 error telling you to add it. |
-| `MISTRAL_API_KEYS` | No | — | Comma-separated list of multiple keys to round-robin/fail over across. Takes priority over `MISTRAL_API_KEY` if set. |
-| `MISTRAL_MODEL` | No | `mistral-large-latest` | Override the model used for every AI call. |
-| `SMTP_HOST` / `SMTP_PORT` | **Yes** | — | SMTP server for sending OTP emails (signup verification, password reset). |
-| `SMTP_USERNAME` / `SMTP_PASSWORD` | **Yes** | — | SMTP login credentials (for Gmail, use an App Password). |
-| `SMTP_FROM_EMAIL` / `SMTP_FROM_NAME` | **Yes**² / No | — / `Prep Desk` | The "from" address/name on OTP emails. |
-| `OTP_EXPIRE_MINUTES` | No | `10` | How long a verification/reset code stays valid. |
-| `CORS_ORIGINS` | No | `http://localhost:5173,http://127.0.0.1:5173` | Comma-separated allowed frontend origins. |
-| `ACCESS_TOKEN_EXPIRE_MINUTES` | No | `10080` (7 days) | JWT session length. |
-| `DATABASE_URL` | No | local SQLite file | Point at Postgres/MySQL if you outgrow SQLite. |
-| `JWT_SECRET` | No | auto-generated | Auto-created and persisted into `.env` on first run — don't need to set it. |
+</details>
 
-¹ Either `MISTRAL_API_KEY` or `MISTRAL_API_KEYS` must be set.
-² Registration and login won't work at all without SMTP configured, since every account must verify
-an emailed code before it can sign in.
-
-**`frontend/.env`**
-
-| Variable | Default |
-|---|---|
-| `VITE_API_URL` | `http://localhost:8000` |
-
----
-
-## 5. API overview
-
-All routes except the ones under `/api/auth/` below require `Authorization: Bearer <token>`.
+<details>
+<summary><strong>API overview</strong></summary>
 
 | Method & path | Purpose |
 |---|---|
 | `POST /api/auth/register` | Create account (unverified) — sends a 6-digit email code |
-| `POST /api/auth/verify-otp` | Verify the signup code → returns a session token |
-| `POST /api/auth/resend-otp` | Resend a code (`purpose`: `register` or `reset`) |
-| `POST /api/auth/login` | Sign in — 403 with a clear message if not yet verified |
-| `POST /api/auth/forgot-password` | Send a password-reset code by email |
-| `POST /api/auth/reset-password` | Reset password with the emailed code → returns a session token |
-| `GET /api/auth/me` | Current user |
-| `POST /api/resume/extract` | Extract text from an uploaded `.pdf`/`.docx`/`.txt` resume |
-| `POST /api/analyze` | JD + resume → match score, skills, questions (saved to history) |
-| `GET /api/history/analyses` | List your past analyses |
+| `POST /api/auth/verify-otp` | Verify signup code → session token |
+| `POST /api/auth/login` | Sign in — blocked with a clear message if unverified |
+| `POST /api/auth/forgot-password` / `reset-password` | Email-code password reset |
+| `POST /api/analyze` | JD + resume → match score, skills, questions |
 | `POST /api/plan` | Generate a day-by-day study plan |
-| `PATCH /api/plan/{id}/progress` | Mark a day complete/incomplete |
-| `GET /api/resume/templates` | List available resume templates |
-| `POST /api/resume/improve` | AI-rewrite a resume for a target role (auto-fills the page) |
-| `POST /api/resume/preview` | Render resume JSON → HTML (for in-browser preview / template gallery) |
-| `POST /api/resume` | Save a resume version |
+| `PATCH /api/plan/{id}/progress` | Mark a day complete |
+| `POST /api/resume/improve` | AI-rewrite a resume for a target role |
+| `POST /api/resume/preview` | Render resume JSON → HTML (live preview / template gallery) |
 | `POST /api/resume/pdf` | Render resume JSON → downloadable PDF |
-| `GET /api/resume/{id}/pdf` | Re-download a saved resume as PDF |
 
-Interactive docs: **http://localhost:8000/docs**
+Full interactive docs at `/docs` on any running instance.
 
----
-
-## 6. Feature list (already built)
-
-- A public marketing landing page (hero, features, how-it-works)
-- Full email-verified auth: signup sends a 6-digit code, login blocks unverified accounts, and
-  forgot-password works the same way via an emailed reset code
-- Multi-key support for Mistral — configure several API keys and requests automatically round-robin
-  across them and fail over on rate limits, so a live demo doesn't get cut off by one key's limit
-- AI-powered match scoring, skill-gap detection, and question generation
-- Personalized day-by-day study plans with a per-day progress tracker
-- ATS resume rewriting that **reuses the resume you already uploaded during analysis** — no re-pasting;
-  it runs automatically off your existing text and the JD's skill gaps
-- Resume rewriting is tuned to **fill exactly one A4 page** — sparse drafts automatically get a second,
-  truthful expansion pass so there's no empty white space, without ever fabricating experience
-- Live template gallery (see all 3 layouts rendered with your real content before picking one) and a
-  full-size preview modal before you download
-- PDF export via Puppeteer, with clear, actionable error messages if Node/Puppeteer/Chromium aren't set up yet
-- Every analysis, plan, and resume saved to your account history
-- Resume upload (`.pdf` / `.docx` / `.txt`) with automatic text extraction
-- Copy-to-clipboard on each generated interview question
-
-## 7. Ideas for what to add next
-
-- **Mock interview mode** — timed Q&A with self-rating and notes per question
-- **Company-specific question packs** — scrape/curate real questions per company
-- **LinkedIn import** — pull your profile straight in instead of pasting text
-- **Editable saved resumes** — currently saved resumes are view/download only; wire the builder's
-  edit form up to load an existing saved resume
-- **Team/coach mode** — share an analysis + plan with a mentor for feedback
-- **Calendar integration** — push each study day to Google/Outlook calendar with reminders
-- **Analytics dashboard** — track match-score trends across multiple job applications over time
-- **Streaming AI responses** — stream the analysis/plan/resume generation token-by-token instead of
-  waiting for the full response
-- **Rate-limit backoff/queueing** — currently a rate-limited key is just skipped for that request;
-  a smarter version could temporarily "cool down" a key and prefer others for a few minutes
+</details>
 
 ---
 
-## 8. Troubleshooting
+## 🗺 Roadmap
 
-- **"AI features are not enabled"** — you haven't set `MISTRAL_API_KEY` (or `MISTRAL_API_KEYS`) in
-  `backend/.env`, or you need to restart uvicorn after adding it.
-- **"All configured Mistral API key(s) are currently rate-limited"** — every key you've configured hit
-  its limit at the same time. Add another key to `MISTRAL_API_KEYS`, or wait a bit.
-- **Registration/login fails with an email error** — SMTP isn't configured (or the credentials are
-  wrong). Set `SMTP_HOST`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_FROM_EMAIL` in `backend/.env`. For
-  Gmail, you must use an [App Password](https://myaccount.google.com/apppasswords), not your normal password.
-- **Didn't receive the OTP email** — check spam, then use "Resend code" on the verification screen;
-  codes expire after `OTP_EXPIRE_MINUTES` (default 10).
-- **"Puppeteer isn't installed yet"** — run `npm install` inside `backend/pdf_service` once.
-- **"Puppeteer's bundled Chromium isn't installed"** — run
-  `cd backend/pdf_service && npx puppeteer browsers install chrome`, or set `PUPPETEER_EXECUTABLE_PATH`
-  to a system Chrome/Chromium binary (see §3.2).
-- **"Node.js is not installed or not on PATH"** — install Node 18+ and make sure `node` is on your PATH;
-  the FastAPI backend shells out to it for PDF generation.
-- **CORS errors in the browser console** — make sure `frontend/.env`'s `VITE_API_URL` matches where
-  uvicorn is actually running, and that it's included in `backend/.env`'s `CORS_ORIGINS`.
+- [ ] Mock interview mode — timed Q&A with self-rating
+- [ ] Editable saved resumes (currently view/download only)
+- [ ] Company-specific question packs
+- [ ] LinkedIn profile import
+- [ ] Analytics dashboard — match-score trends across applications
+- [ ] Streaming AI responses
+
+---
+
+## 👩‍💻 Author
+
+**Arunima**
+<!-- Add your links: -->
+<!-- [Portfolio](https://your-portfolio.com) · [LinkedIn](https://linkedin.com/in/you) · [GitHub](https://github.com/you) -->
+
+<div align="center">
+<sub>Made with ❤️ by Arunima</sub>
+</div>
